@@ -1,0 +1,14 @@
+# Direct Python dependencies inferred from the project imports.
+# `tkinter` is part of the Python standard library on Windows/macOS.
+# On Linux, install the OS package separately if needed (for example `python3-tk`).
+# `nltk` data packages `wordnet` and `omw-1.4` are downloaded by the app on first run.
+
+numpy
+opencv-python
+Pillow
+pyttsx3
+torch
+transformers
+nltk
+pyspellchecker
+fpdf2

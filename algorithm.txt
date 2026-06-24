@@ -1,0 +1,70 @@
+Algorithms Used in This Project
+
+This project is a handwritten text recognition system with image processing, OCR, and text post-processing. The main algorithms used in `main.py` are:
+
+1. Ink Extraction and Paper Suppression
+   The image is converted into grayscale, HSV, and RGB channel views. Darkness, saturation, value, and color spread are combined to emphasize handwritten ink while reducing the paper background. This helps preserve black and colored pen strokes.
+
+2. Non-Local Means Denoising
+   `cv2.fastNlMeansDenoising()` is used to remove noise from the document image while keeping the handwriting strokes readable.
+
+3. CLAHE Contrast Enhancement
+   `cv2.createCLAHE()` applies Contrast Limited Adaptive Histogram Equalization to improve local contrast so faint handwriting becomes clearer.
+
+4. Adaptive Gaussian Thresholding
+   `cv2.adaptiveThreshold()` converts the enhanced grayscale image into a binary image using local thresholds. This is useful when the paper has uneven lighting or shadows.
+
+5. Morphological Opening
+   `cv2.morphologyEx(..., cv2.MORPH_OPEN, ...)` removes small noise blobs after thresholding while preserving the main text strokes.
+
+6. Bounding Box Based Text Region Detection
+   `cv2.findNonZero()` and `cv2.boundingRect()` are used to detect the main handwritten region and crop away unnecessary empty margins.
+
+7. Projection Profile Line Segmentation
+   The system sums foreground pixels row by row to build a horizontal projection profile. A smoothed moving-average signal is then thresholded to find text-line spans. This separates a paragraph into individual lines.
+
+8. Large Region Re-Splitting
+   If a detected line region is unusually tall, the same projection-profile method is applied again to split it into smaller line pieces.
+
+9. Sliding Window Paragraph Chunking
+   For long handwritten content, the image is divided into overlapping vertical chunks. Each chunk is processed separately so long paragraphs can still be recognized reliably.
+
+10. Image Resizing, Sharpening, and Padding
+    Before OCR, each detected line is optionally sharpened or binarized, resized to a fixed height, and padded with white borders. This normalizes inputs for the recognition model.
+
+11. Transformer-Based Handwritten OCR
+    The project uses Microsoft's TrOCR model through Hugging Face Transformers. TrOCR is a transformer OCR architecture based on a vision encoder and text decoder for handwritten text recognition.
+
+12. Beam Search Decoding
+    During OCR, the model generates text using beam search (`num_beams`). The project uses fast decoding first, then retries weak predictions with stronger preprocessing and a wider beam setting.
+
+13. Heuristic Candidate Filtering
+    Weak OCR results are filtered using rules such as:
+    - empty text
+    - too many digits
+    - repeated characters
+    - very short low-quality outputs
+
+14. Heuristic Candidate Scoring
+    When multiple OCR candidates are available, the project scores them using letter count, digit count, spacing, punctuation, and word-shape heuristics, then chooses the best one.
+
+15. Text Cleanup Using Regular Expressions
+    OCR output is normalized by collapsing repeated spaces and fixing spacing before punctuation using regex-based cleanup.
+
+16. Spell Correction Algorithm
+    `pyspellchecker` is used to detect unknown words and suggest corrections. Additional filtering rules are applied so only reasonable spelling fixes are accepted.
+
+17. Rule-Based Grammar Correction
+    Grammar fixes are performed using predefined regular-expression replacement rules for common OCR and writing mistakes such as `dont -> don't` and `teh -> the`.
+
+18. Case Preservation Logic
+    When spelling or grammar replacements are made, the original capitalization style is preserved using a case-matching helper.
+
+19. Synonym Lookup with WordNet
+    NLTK WordNet is used to retrieve synonym sets and definitions for a selected word so the user can replace words with synonyms.
+
+20. Text-to-Speech Playback
+    The recognized text is spoken using `pyttsx3`, which performs offline speech synthesis. Threading is used so speech playback does not freeze the GUI.
+
+Summary
+The project combines classical image-processing algorithms, heuristic text-quality scoring, transformer-based OCR, spell and grammar correction, synonym lookup, and offline text-to-speech in one desktop application.

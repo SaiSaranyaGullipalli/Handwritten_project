@@ -1,0 +1,46 @@
+Tools and Technologies Used in This Project
+
+1. Python
+   Core programming language used to build the application.
+
+2. Tkinter
+   Used to create the desktop graphical user interface.
+
+3. OpenCV
+   Used for image preprocessing, thresholding, denoising, and text-region handling.
+
+4. NumPy
+   Used for array and matrix operations during image processing.
+
+5. PyTorch
+   Used to run the OCR deep learning model and support CPU/GPU inference.
+
+6. Hugging Face Transformers
+   Used to load and run the TrOCR model for handwriting recognition.
+
+7. Microsoft TrOCR
+   Pretrained transformer-based OCR model used for handwritten text recognition.
+
+8. Pillow (PIL)
+   Used for opening, resizing, and displaying images in the GUI.
+
+9. NLTK
+   Used for language resources such as WordNet.
+
+10. WordNet
+    Used to provide synonym suggestions in the application.
+
+11. PySpellChecker
+    Used for spelling correction after OCR text extraction.
+
+12. pyttsx3
+    Used for offline text-to-speech conversion of recognized text.
+
+13. threading
+    Used to run OCR and speech tasks without freezing the GUI.
+
+14. FPDF / fpdf2
+    Used for PDF generation in the helper module.
+
+15. Local Model Cache
+    Used to store TrOCR model files in the `models/trocr_cache` folder for offline use.
